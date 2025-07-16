@@ -1,0 +1,40 @@
+body {
+  font-family: sans-serif;
+  background-color: #f2f2f2;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+}
+
+.semestre {
+  margin-bottom: 30px;
+}
+
+.semestre h2 {
+  background-color: #ddd;
+  padding: 10px;
+}
+
+.ramo {
+  display: inline-block;
+  background-color: #aee1f9; /* celeste pastel */
+  border: 1px solid #aaa;
+  padding: 10px 15px;
+  margin: 5px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.ramo.aprobado {
+  background-color: #9b59b6; /* morado */
+  color: white;
+  text-decoration: line-through;
+}
+
+.ramo.bloqueado {
+  background-color: #ccc;
+  color: #555;
+  cursor: not-allowed;
+}
