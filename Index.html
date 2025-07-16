@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Malla Interactiva</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>Malla Interactiva</h1>
+  <div id="malla-container">
+
+    <div class="semestre">
+      <h2>Semestre I</h2>
+      <div class="ramo" data-id="1" data-prerreq="">Ramo A</div>
+      <div class="ramo" data-id="2" data-prerreq="">Ramo B</div>
+    </div>
+
+    <div class="semestre">
+      <h2>Semestre II</h2>
+      <div class="ramo" data-id="3" data-prerreq="1">Ramo C (requiere A)</div>
+      <div class="ramo" data-id="4" data-prerreq="2">Ramo D (requiere B)</div>
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+body {
+  font-family: sans-serif;
+  background-color: #f2f2f2;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+}
+
+.semestre {
+  margin-bottom: 30px;
+}
+
+.semestre h2 {
+  background-color: #ddd;
+  padding: 10px;
+}
+
+.ramo {
+  display: inline-block;
+  background-color: #aee1f9; /* celeste pastel */
+  border: 1px solid #aaa;
+  padding: 10px 15px;
+  margin: 5px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.ramo.aprobado {
+  background-color: #9b59b6; /* morado */
+  color: white;
+  text-decoration: line-through;
+}
+
+.ramo.bloqueado {
+  background-color: #ccc;
+  color: #555;
+  cursor: not-allowed;
+}
+document.addEventListener("DOMContentLoaded", () => {
+  const ramos = document.querySelectorAll(".ramo");
+
+  function actualizarEstado() {
+    ramos.forEach((ramo) => {
+      const id = ramo.dataset.id;
+      const prereq = ramo.dataset.prerreq ? ramo.dataset.prerreq.split(",") : [];
+      const aprobado = localStorage.getItem(id) === "true";
+
+      // Estado aprobado
+      if (aprobado) {
+        ramo.classList.add("aprobado");
+      } else {
+        ramo.classList.remove("aprobado");
+      }
+
+      // Verificar bloqueo
+      const bloqueado = prereq.some((p) => localStorage.getItem(p) !== "true");
+      if (bloqueado && !aprobado) {
+        ramo.classList.add("bloqueado");
+        ramo.removeEventListener("click", handleClick);
+      } else {
+        ramo.classList.remove("bloqueado");
+        ramo.addEventListener("click", handleClick);
+      }
+    });
+  }
+
+  function handleClick(e) {
+    const ramo = e.currentTarget;
+    if (ramo.classList.contains("bloqueado")) return;
+
+    const id = ramo.dataset.id;
+    const nuevoEstado = !ramo.classList.contains("aprobado");
+    localStorage.setItem(id, nuevoEstado);
+    actualizarEstado();
+  }
+
+  actualizarEstado();
+});
