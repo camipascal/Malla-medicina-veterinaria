@@ -26,3 +26,269 @@
   <script src="script.js"></script>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Malla Interactiva Medicina Veterinaria</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f5f5f5;
+    }
+    .semestre {
+      margin: 20px 0;
+    }
+    .titulo-semestre {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .ramo {
+      display: inline-block;
+      background-color: #cce5ff;
+      color: #000;
+      padding: 10px;
+      margin: 5px;
+      border-radius: 5px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .aprobado {
+      background-color: #b19cd9;
+      text-decoration: line-through;
+    }
+    .bloqueado {
+      background-color: #ccc;
+      color: #666;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <h1>Malla Interactiva Medicina Veterinaria</h1>
+  <div id="contenedor"></div>
+
+  <script>
+    const malla = [
+      {
+        semestre: 'Primer Semestre',
+        ramos: [
+          "Introducción a las ciencias veterinarias",
+          "Fundamentos de la química",
+          "Biología celular y molecular",
+          "Matemática",
+          "Zoología",
+          "Fundamentos de la física",
+        ],
+      },
+      {
+        semestre: 'Segundo Semestre',
+        ramos: [
+          "Anatomía animal I",
+          "Praderas y especies forrajeras",
+          "Fundamentos de la bioquímica",
+          "Histoembriología veterinaria",
+          "Ecología",
+          "Electivo 1",
+        ],
+      },
+      {
+        semestre: 'Tercer Semestre',
+        ramos: [
+          "Anatomía animal II",
+          "Nutrición y alimentación animal",
+          "Fisiología veterinaria",
+          "Práctica inicial",
+          "Inmunología general",
+          "Bioestadística",
+          "Electivo 2",
+        ],
+      },
+      {
+        semestre: 'Cuarto Semestre',
+        ramos: [
+          "Etología y bienestar animal",
+          "Histopatología",
+          "Microbiología veterinaria",
+          "Conservación de fauna silvestre",
+          "Métodos de investigación en salud",
+          "Electivo 3",
+        ],
+      },
+      {
+        semestre: 'Quinto Semestre',
+        ramos: [
+          "Genética en ciencias veterinarias",
+          "Epidemiología veterinaria",
+          "Fisiopatología veterinaria",
+          "Gestión ambiental y desarrollo sustentable",
+          "Gestión contable y financiera",
+          "Electivo 4",
+        ],
+      },
+      {
+        semestre: 'Sexto Semestre',
+        ramos: [
+          "Semiología veterinaria",
+          "Reproducción animal",
+          "Anatomía patológica",
+          "Microbiología de los alimentos",
+          "Práctica intermedia",
+          "Electivo 5",
+        ],
+      },
+      {
+        semestre: 'Séptimo Semestre',
+        ramos: [
+          "Sistemas de producción animal",
+          "Farmacología veterinaria",
+          "Enfermedades producidas por agentes biológicos I",
+          "Procedimientos clínicos",
+          "Imagenología",
+          "Inteligencia artificial aplicada a la salud",
+        ],
+      },
+      {
+        semestre: 'Octavo Semestre',
+        ramos: [
+          "Laboratorio clínico y biotecnología",
+          "Investigación en ciencias veterinarias",
+          "Enfermedades producidas por agentes biológicos II",
+          "Principios de cirugía y anestesiología",
+          "Medicina interna",
+          "Bioética",
+        ],
+      },
+      {
+        semestre: 'Noveno Semestre',
+        ramos: [
+          "Salud pública veterinaria",
+          "Unidad de investigación I",
+          "Internado de pequeños animales I",
+          "Internados de animales mayores",
+          "Formulación y evaluación de proyectos veterinarios",
+          "Gestión veterinaria",
+          "Práctica profesional",
+        ],
+      },
+      {
+        semestre: 'Décimo Semestre',
+        ramos: [
+          "Una salud",
+          "Unidad de investigación II",
+          "Internado electivo: pequeños animales",
+          "Internado electivo: animales mayores",
+          "Internado electivo: conservación, biodiversidad y medio ambiente",
+          "Internado electivo: producción y sistemas de aseguramiento de la calidad",
+          "Orientación laboral y responsabilidad ética en medicina veterinaria",
+        ],
+      },
+    ];
+
+    const prerrequisitos = {
+      "Anatomía animal I": ["Zoología"],
+      "Praderas y especies forrajeras": ["Biología celular y molecular"],
+      "Fundamentos de la bioquímica": ["Fundamentos de la química"],
+      "Histoembriología veterinaria": ["Biología celular y molecular"],
+      "Ecología": ["Matemática"],
+      "Anatomía animal II": ["Anatomía animal I"],
+      "Nutrición y alimentación animal": ["Praderas y especies forrajeras"],
+      "Fisiología veterinaria": ["Fundamentos de la bioquímica"],
+      "Práctica inicial": ["Anatomía animal I"],
+      "Inmunología general": ["Fundamentos de la bioquímica"],
+      "Bioestadística": ["Matemática"],
+      "Etología y bienestar animal": ["Fisiología veterinaria"],
+      "Histopatología": ["Fisiología veterinaria"],
+      "Microbiología veterinaria": ["Inmunología general"],
+      "Conservación de fauna silvestre": ["Ecología"],
+      "Métodos de investigación en salud": ["Bioestadística"],
+      "Genética en ciencias veterinarias": ["Bioestadística"],
+      "Epidemiología veterinaria": ["Métodos de investigación en salud"],
+      "Fisiopatología veterinaria": ["Anatomía animal II", "Histopatología"],
+      "Gestión ambiental y desarrollo sustentable": ["Conservación de fauna silvestre"],
+      "Gestión contable y financiera": ["Bioestadística"],
+      "Semiología veterinaria": ["Etología y bienestar animal", "Fisiopatología veterinaria"],
+      "Reproducción animal": ["Fisiopatología veterinaria"],
+      "Anatomía patológica": ["Fisiopatología veterinaria"],
+      "Microbiología de los alimentos": ["Microbiología veterinaria", "Métodos de investigación en salud"],
+      "Práctica intermedia": ["Práctica inicial", "Etología y bienestar animal"],
+      "Sistemas de producción animal": ["Nutrición y alimentación animal", "Genética en ciencias veterinarias"],
+      "Farmacología veterinaria": ["Fisiopatología veterinaria"],
+      "Enfermedades producidas por agentes biológicos I": ["Epidemiología veterinaria", "Microbiología de los alimentos"],
+      "Procedimientos clínicos": ["Semiología veterinaria"],
+      "Imagenología": ["Anatomía patológica"],
+      "Inteligencia artificial aplicada a la salud": ["Bioestadística"],
+      "Laboratorio clínico y biotecnología": ["Anatomía patológica", "Enfermedades producidas por agentes biológicos I"],
+      "Investigación en ciencias veterinarias": ["Métodos de investigación en salud", "Farmacología veterinaria"],
+      "Enfermedades producidas por agentes biológicos II": ["Enfermedades producidas por agentes biológicos I"],
+      "Principios de cirugía y anestesiología": ["Farmacología veterinaria", "Procedimientos clínicos"],
+      "Medicina interna": ["Semiología veterinaria", "Imagenología"],
+      "Salud pública veterinaria": ["Enfermedades producidas por agentes biológicos II"],
+      "Unidad de investigación I": ["Investigación en ciencias veterinarias", "Bioética"],
+      "Internado de pequeños animales I": ["Laboratorio clínico y biotecnología", "Principios de cirugía y anestesiología", "Medicina interna"],
+      "Internados de animales mayores": ["Laboratorio clínico y biotecnología", "Principios de cirugía y anestesiología", "Medicina interna"],
+      "Formulación y evaluación de proyectos veterinarios": ["Gestión contable y financiera", "Sistemas de producción animal"],
+      "Gestión veterinaria": ["Gestión contable y financiera", "Sistemas de producción animal"],
+      "Una salud": ["Salud pública veterinaria", "Formulación y evaluación de proyectos veterinarios"],
+      "Unidad de investigación II": ["Unidad de investigación I"],
+      "Orientación laboral y responsabilidad ética en medicina veterinaria": ["Práctica intermedia"]
+    };
+
+    function guardarEstado(nombre, aprobado) {
+      localStorage.setItem(nombre, aprobado);
+    }
+
+    function cargarEstado(nombre) {
+      return localStorage.getItem(nombre) === "true";
+    }
+
+    function crearMalla() {
+      const contenedor = document.getElementById("contenedor");
+      malla.forEach((sem) => {
+        const div = document.createElement("div");
+        div.className = "semestre";
+        const titulo = document.createElement("div");
+        titulo.className = "titulo-semestre";
+        titulo.textContent = sem.semestre;
+        div.appendChild(titulo);
+
+        sem.ramos.forEach((ramo) => {
+          const boton = document.createElement("div");
+          boton.textContent = ramo;
+          boton.className = "ramo";
+
+          const aprobado = cargarEstado(ramo);
+          if (aprobado) boton.classList.add("aprobado");
+
+          const requisitos = prerrequisitos[ramo] || [];
+          const noCumple = requisitos.some(
+            (r) => !cargarEstado(r)
+          );
+
+          if (noCumple && !aprobado) {
+            boton.classList.add("bloqueado");
+          }
+
+          boton.addEventListener("click", () => {
+            const cumple = requisitos.every((r) => cargarEstado(r));
+            if (!cumple && !boton.classList.contains("aprobado")) return;
+
+            boton.classList.toggle("aprobado");
+            guardarEstado(ramo, boton.classList.contains("aprobado"));
+            contenedor.innerHTML = "";
+            crearMalla();
+          });
+
+          div.appendChild(boton);
+        });
+
+        contenedor.appendChild(div);
+      });
+    }
+
+    crearMalla();
+  </script>
+</body>
+</html>
